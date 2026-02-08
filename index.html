@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Be My Valentine 💘</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: radial-gradient(circle at top, #ff758f, #ff4d6d);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', sans-serif;
+      overflow: hidden;
+      transition: background 1s ease;
+    }
+
+    /* Floating hearts & kisses */
+    .float {
+      position: absolute;
+      font-size: 22px;
+      animation: floatUp linear infinite;
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(110vh) scale(0.7);
+        opacity: 0;
+      }
+      15% { opacity: 1; }
+      100% {
+        transform: translateY(-10vh) scale(1.4);
+        opacity: 0;
+      }
+    }
+
+    .card {
+      background: white;
+      padding: 45px 50px;
+      border-radius: 25px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+      max-width: 420px;
+      z-index: 2;
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .fade-out {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+
+    h1 { color: #ff4d6d; }
+
+    p {
+      color: #6c757d;
+      min-height: 32px;
+      margin-bottom: 30px;
+    }
+
+    button {
+      padding: 12px 32px;
+      font-size: 18px;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+    }
+
+    #yes {
+      background: #ff4d6d;
+      color: white;
+    }
+
+    #no {
+      background: #adb5bd;
+      color: white;
+      position: fixed;
+    }
+
+    /* Kiss pop */
+    .kiss-pop {
+      position: absolute;
+      font-size: 32px;
+      animation: kissPop 1s ease-out forwards;
+      pointer-events: none;
+    }
+
+    @keyframes kissPop {
+      0% { transform: scale(0); opacity: 0; }
+      30% { transform: scale(1.4); opacity: 1; }
+      100% { transform: translateY(-50px) scale(0.8); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card" id="card">
+    <h1>Will you be my Valentine? 💖</h1>
+    <p id="message">Be honest… your heart already knows 😌</p>
+    <button id="yes" onclick="yesClicked()">YES 💕</button>
+    <button id="no">NO 💔</button>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById("no");
+    const message = document.getElementById("message");
+    const card = document.getElementById("card");
+
+    const flirtyLines = [
+      "That NO is panicking 😏",
+      "Love detected 💖",
+      "You’re smiling again 😌",
+      "Kisses are loading 💋",
+      "Your heart already said YES 💕",
+      "Stop teasing destiny 😘"
+    ];
+
+    const floatEmojis = ["💖","💗","💘","💕","💋","😘","😍"];
+
+    // LOTS of floating hearts & kisses (always)
+    setInterval(() => {
+      for (let i = 0; i < 3; i++) {
+        createFloatingEmoji();
+      }
+    }, 350);
+
+    function createFloatingEmoji() {
+      const el = document.createElement("div");
+      el.className = "float";
+      el.textContent = floatEmojis[Math.floor(Math.random() * floatEmojis.length)];
+      el.style.left = Math.random() * 100 + "vw";
+      el.style.fontSize = 18 + Math.random() * 20 + "px";
+      el.style.animationDuration = 4 + Math.random() * 4 + "s";
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 8000);
+    }
+
+    noBtn.addEventListener("mouseover", (e) => {
+      message.textContent =
+        flirtyLines[Math.floor(Math.random() * flirtyLines.length)];
+
+      const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+      const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+
+      // Kiss pop
+      const kiss = document.createElement("div");
+      kiss.className = "kiss-pop";
+      kiss.textContent = "💋";
+      kiss.style.left = e.clientX + "px";
+      kiss.style.top = e.clientY + "px";
+      document.body.appendChild(kiss);
+      setTimeout(() => kiss.remove(), 1000);
+    });
+
+    function yesClicked() {
+      card.classList.add("fade-out");
+
+      document.body.style.background =
+        "radial-gradient(circle at center, #a18cd1, #fbc2eb)";
+
+      // HEART & KISS EXPLOSION
+      for (let i = 0; i < 60; i++) {
+        setTimeout(createFloatingEmoji, i * 40);
+      }
+
+      setTimeout(() => {
+        document.body.innerHTML = `
+          <div style="
+            height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            text-align:center;
+            font-family:Segoe UI;
+            color:white;
+          ">
+            <h1>
+              💖💋 YESSSS 💋💖<br><br>
+              You’re officially my Valentine 😍💕
+            </h1>
+          </div>
+        `;
+      }, 900);
+    }
+  </script>
+
+</body>
+</html>
